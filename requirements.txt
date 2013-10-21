@@ -1,0 +1,12 @@
+Flask==0.10.1
+Flask-Assets==0.8
+Flask-Script==0.5.3
+Jinja2==2.7.1
+MarkupSafe==0.18
+Werkzeug==0.9.4
+webassets==0.8
+cssmin==0.1.4
+Unidecode==0.04.14
+dataset==0.3.13
+requests
+lxml
