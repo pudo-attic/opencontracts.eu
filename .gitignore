@@ -37,3 +37,9 @@ nosetests.xml
 ted_exports/*
 .env
 *.DS_Store
+
+opencontracts/static/vendor/*
+opencontracts/static/gen/*
+opencontracts/static/.webassets-cache/*
+
+*.DS_Store

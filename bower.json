@@ -1,0 +1,14 @@
+{
+  "name": "opencontracts",
+  "version": "0.1.0",
+  "main": "opencontracts/static/style/style.css",
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt"
+  ],
+  "dependencies": {
+    "bootstrap": "3.0.0",
+    "font-awesome": "3.2.1",
+    "jquery": "2.0.3"
+  }
+}
