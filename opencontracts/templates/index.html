@@ -1,0 +1,14 @@
+{%extends "layout.html" %}
+{%from "table.html" import table %}
+
+{% block title %}
+  Public procurement data from the European Union and its member states
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+  <h3>Public contracts by country</h3>
+  {{ table(by_country) }}  
+{% endblock %}
+

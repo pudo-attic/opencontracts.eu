@@ -1,0 +1,16 @@
+{% macro table(table) -%}
+  <table class="table table-striped table-condensed">
+    <tr>
+      {% for col in table.headers %}
+        <th class="{{col.type}}">{{col.title}}</th>
+      {% endfor %}
+    </tr>
+    {% for cells in table.rows %}
+      <tr>
+        {% for col, row in cells %}
+          <td class="{{col.type}}">{{col.text(row)}}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </table>
+{%- endmacro %}

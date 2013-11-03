@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>OpenContracts.eu</title>
+    <meta name="description" content="Information on government purchases and contracts from all member states of the European Union.">
+    {% assets filters="less,cssmin,cssrewrite,datauri", output="gen/style.css",
+      "vendor/bootstrap/less/bootstrap.less",
+      "vendor/font-awesome/less/font-awesome.less",
+      "style/style.less" %}
+        <link type="text/css" href="{{ ASSET_URL }}" rel="stylesheet">
+    {% endassets %}
+    <!--link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet"-->
+    <link rel="shortcut icon" href="opennews-favicon.ico" type="image/x-icon" />
+</head>
+
+<body>
+  <div class="airlock">
+    <div class="container">
+      {% block content %}
+         - No Content -
+      {% endblock %}
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-sm-12">
+          <p style="text-align: center;">
+            <strong>OpenContracts.eu:</strong> government purchases from the member states of the European Union.<br/>
+            <a href="https://github.com/pudo/opencontracts.eu"><i class="icon-github"></i> GitHub</a> &middot;
+            <a href="https://github.com/pudo/opencontracts.eu/issues">Issues</a> &middot;
+            <a href="https://pudo.org">pudo.org</a> &middot;
+            <a href="http://mozillaopennews.org/">Knight-Mozilla OpenNews</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://login.persona.org/include.js" type="text/javascript"></script>
+  {% assets filters="uglifyjs", output="gen/app.js",
+        "vendor/jquery/jquery.js" %}
+      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+  {% endassets %}
+
+</body>
+</html>

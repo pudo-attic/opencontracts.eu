@@ -1,9 +1,11 @@
 from flask.ext.script import Manager
 from flask.ext.assets import ManageAssets
 
-from opencontracts.core import app, assets
+from opencontracts.core import assets
+from opencontracts.web import app
 from opencontracts.extract.download import make_ecas_session, download_latest
 from opencontracts.extract.parse import ted_documents, parse
+
 
 manager = Manager(app)
 manager.add_command("assets", ManageAssets(assets))
