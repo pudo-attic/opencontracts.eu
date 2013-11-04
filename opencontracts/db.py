@@ -26,9 +26,9 @@ def aggregate(group_by=[], order_by=[('count', 'desc'),], **filters):
 
     _fields = [
         func.count(func.distinct(contract_alias.c.id)).label('count'),
-        func.sum(func.cast(contract_alias.c.total_value_cost, FLOAT)).label('contract_total_value_cost'),
-        func.sum(func.cast(contract_alias.c.initial_value_cost, FLOAT)).label('contract_initial_value_cost'),
-        func.sum(func.cast(contract_alias.c.contract_value_cost, FLOAT)).label('contract_contract_value_cost')
+        func.sum(func.cast(contract_alias.c.total_value_cost, FLOAT)).label('contract_total_value_cost_eur'),
+        func.sum(func.cast(contract_alias.c.initial_value_cost, FLOAT)).label('contract_initial_value_cost_eur'),
+        func.sum(func.cast(contract_alias.c.contract_value_cost, FLOAT)).label('contract_contract_value_cost_eur')
         ]
 
     _filters = contract_alias.c.doc_no == document_alias.c.doc_no

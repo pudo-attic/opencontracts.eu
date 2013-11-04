@@ -73,15 +73,12 @@ class AggregatePager(object):
 @app.route("/index.html")
 @app.route("/index.<pager>.<sort>-<direction>.html")
 def index(**kw):
-    #by_country = aggregate(group_by=['contract_authority_official_name'],
-    #    contract_authority_country='DE')
-    #print len(list(table))
     by_country = AggregatePager('by_country')
     by_country.add_dimension('contract_authority_country', 'Authority Country',
         text_formatter=country_name_formatter)
     by_country.add_measure('count', 'Count',
         text_formatter=format_number)
-    by_country.add_measure('contract_contract_value_cost', 'Contract value (EUR)',
+    by_country.add_measure('contract_contract_value_cost_eur', 'Contract value (EUR)',
         text_formatter=format_number)
     #by_country.add_filter('contract_authority_country', 'DE')
     res = make_response(render_template('index.html', by_country=by_country))
