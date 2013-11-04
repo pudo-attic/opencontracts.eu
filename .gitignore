@@ -36,6 +36,7 @@ nosetests.xml
 
 ted_exports/*
 .env
+*.db
 *.DS_Store
 
 opencontracts/static/vendor/*
