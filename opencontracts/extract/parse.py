@@ -1,6 +1,7 @@
 from lxml import etree
 from pprint import pprint
 from collections import defaultdict
+from slugify import slugify
 
 from opencontracts.extract.parseutil import ted_documents, Extractor
 from opencontracts.db import engine, documents_table, contracts_table, cpvs_table, references_table
@@ -125,10 +126,13 @@ def parse(filename, file_content):
         obj = {'doc_no': doc_no, 'ref': ref}
         references_table.insert(obj)
 
-    for contract in contracts:
+    for i, contract in enumerate(contracts):
         contract['doc_no'] = doc_no
+        contract['index'] = i
+        contract['slug'] = slugify('%s-c%s' % (contract['doc_no'], contract['index']))
         contracts_table.insert(contract)
 
+    data['slug'] = slugify(doc_no)
     documents_table.insert(data)
     engine.commit()
     #pprint(data)

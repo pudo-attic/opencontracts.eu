@@ -9,6 +9,7 @@ documents_table = engine['documents']
 contracts_table = engine['contracts']
 references_table = engine['references']
 cpvs_table = engine['cpvs']
+currency_table = engine['currency_rates']
 
 
 

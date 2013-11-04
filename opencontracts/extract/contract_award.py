@@ -1,6 +1,9 @@
 from pprint import pprint
+from slugify import slugify
 
 from opencontracts.extract.parseutil import Extractor
+from opencontracts.extract.exchange_rates import convert_currency
+
 
 LOOKUP = {
         'appeal_body': {
@@ -77,8 +80,6 @@ LOOKUP = {
 
 
 
-
-
 def _lookup(s, key):
     return LOOKUP[key][s]
 
@@ -101,13 +102,17 @@ def extract_address(ext, prefix, query):
         prefix + '_url_info': ext.text(query+'URL_INFORMATION'),
         prefix + '_url_participate': ext.text(query+'URL_PARTICIPATE')
     }
+
+    if data[prefix + '_official_name'] is not None:
+        data[prefix + '_slug'] = slugify(data[prefix + '_official_name'])
+
     for k, v in data.items():
         if v is None:
             del data[k]
     return data
 
 
-def extract_values(ext, prefix, query):
+def extract_values(ext, conversion_date, prefix, query):
     if query is None:
         return {}
     data = {
@@ -125,13 +130,19 @@ def extract_values(ext, prefix, query):
     if ext.el.find(query + '/EXCLUDING_VAT') is not None:
         data[prefix + '_vat_included'] = False
 
+    for key in [prefix + '_cost', prefix + '_low', prefix + '_high']:
+        value = data.get(key)
+        if value is not None:
+            currency = data.get(prefix + '_currency')
+            data[key + '_eur'] = convert_currency(currency, conversion_date, value)
+
     for k, v in data.items():
         if v is None:
             del data[k]
     return data
 
 
-def parse_award(root, lookup):
+def parse_award(root, lookup, conversion_date):
     ext = Extractor(root)
     contract = {
         'contract_number': ext.text('./CONTRACT_NUMBER') or ext.text('.//CONTRACT_NO'),
@@ -144,8 +155,8 @@ def parse_award(root, lookup):
         'offers_received_meaning': ext.text('.//OFFERS_RECEIVED_NUMBER_MEANING')
     }
 
-    contract.update(extract_values(ext, 'contract_value', './/COSTS_RANGE_AND_CURRENCY_WITH_VAT_RATE'))
-    contract.update(extract_values(ext, 'initial_value', './/INITIAL_ESTIMATED_TOTAL_VALUE_CONTRACT'))
+    contract.update(extract_values(ext, conversion_date, 'contract_value', './/COSTS_RANGE_AND_CURRENCY_WITH_VAT_RATE'))
+    contract.update(extract_values(ext, conversion_date, 'initial_value', './/INITIAL_ESTIMATED_TOTAL_VALUE_CONTRACT'))
     contract.update(extract_address(ext, 'operator', lookup('operator')))
     #from lxml import etree
     #print etree.tostring(root, pretty_print=True)
@@ -219,7 +230,8 @@ def parse_form(root):
     ext.text('.//TYPE_CONTRACT_LOCATION_W_PUB/SERVICE_CATEGORY_PUB')
     ext.text('.//CPV/CPV_ADDITIONAL/CPV_CODE')
     
-    form.update(extract_values(ext, 'total_value', lookup('total_value')))
+    conversion_date = '%s-%s-01' % (form['notice_dispatch_year'], form['notice_dispatch_month'])
+    form.update(extract_values(ext, conversion_date, 'total_value', lookup('total_value')))
 
     #from lxml import etree
     #el = root.find('./FD_CONTRACT_AWARD/OBJECT_CONTRACT_INFORMATION_CONTRACT_AWARD_NOTICE/TOTAL_FINAL_VALUE')
@@ -230,7 +242,7 @@ def parse_form(root):
     
     contracts = []
     for award in root.findall(lookup('award_dest')):
-        contract = parse_award(award, lookup)
+        contract = parse_award(award, lookup, conversion_date)
         contract.update(form)
         contracts.append(contract)
         #pprint(contract)

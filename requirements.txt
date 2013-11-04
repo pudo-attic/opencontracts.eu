@@ -10,3 +10,4 @@ Unidecode==0.04.14
 dataset==0.3.13
 requests
 lxml
+python-slugify
