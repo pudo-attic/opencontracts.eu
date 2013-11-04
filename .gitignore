@@ -42,4 +42,6 @@ opencontracts/static/vendor/*
 opencontracts/static/gen/*
 opencontracts/static/.webassets-cache/*
 
+exports/*
+
 *.DS_Store

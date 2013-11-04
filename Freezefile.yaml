@@ -1,0 +1,11 @@
+common:
+  database: postgresql://localhost/ted
+  prefix: exports/
+  format: csv
+
+exports:
+
+  - query: >
+      SELECT DISTINCT authority_official_name, authority_postal_code, authority_type, authority_country, authority_address, authority_fax, authority_phone, authority_type_other, authority_town, authority_email, authority_attention FROM contracts;
+    filename: authorities.csv
+
